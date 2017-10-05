@@ -24,6 +24,7 @@
     "scripts"
   ],
   "dependencies": {
+    "@umm/environment_setting": "^1.1.4",
     "glob": "^7.1.2",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
