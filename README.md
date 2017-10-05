@@ -1,14 +1,11 @@
 # What
 
-* 
-
-# Why
-
-* 
+* git コマンドの Unity 実装
 
 # Requirement
 
-* 
+* Unity 2017.1
+* git
 
 # Install
 
