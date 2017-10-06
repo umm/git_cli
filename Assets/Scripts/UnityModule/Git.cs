@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using UniRx;
 using UnityModule.Settings;
 
 namespace UnityModule {
@@ -26,7 +27,7 @@ namespace UnityModule {
             { SubCommandType.Rm      , "rm" },
         };
 
-        public static string Add(IEnumerable<string> files = null, List<string> argumentList = null) {
+        public static IObservable<string> Add(IEnumerable<string> files = null, List<string> argumentList = null) {
             argumentList = CreateListIfNull(argumentList);
             if (files == null) {
                 // ファイル未指定の場合全ファイルを追加する
@@ -37,7 +38,7 @@ namespace UnityModule {
             return Run(SubCommandType.Add, argumentList);
         }
 
-        public static string Branch(string branchName, bool force = false, List<string> argumentMap = null) {
+        public static IObservable<string> Branch(string branchName, bool force = false, List<string> argumentMap = null) {
             argumentMap = CreateListIfNull(argumentMap);
             if (force) {
                 argumentMap.Add("-f");
@@ -46,7 +47,7 @@ namespace UnityModule {
             return Run(SubCommandType.Branch, argumentMap);
         }
 
-        public static string Checkout(string branchName, bool create = false, bool force = false, List<string> argumentMap = null) {
+        public static IObservable<string> Checkout(string branchName, bool create = false, bool force = false, List<string> argumentMap = null) {
             argumentMap = CreateListIfNull(argumentMap);
             if (create) {
                 Branch(branchName, force);
@@ -55,26 +56,26 @@ namespace UnityModule {
             return Run(SubCommandType.Branch, argumentMap);
         }
 
-        public static string Commit(string message, List<string> argumentList = null) {
+        public static IObservable<string> Commit(string message, List<string> argumentList = null) {
             argumentList = CreateListIfNull(argumentList);
             // コマンド経由の場合何らかのメッセージを入れないとコミットできない
             argumentList.Add(string.Format("-m {0}", message.Quot()));
             return Run(SubCommandType.Commit, argumentList);
         }
 
-        public static string Push(string branchName, string remoteName = "origin", List<string> argumentMap = null) {
+        public static IObservable<string> Push(string branchName, string remoteName = "origin", List<string> argumentMap = null) {
             argumentMap = CreateListIfNull(argumentMap);
             argumentMap.Add(remoteName);
             argumentMap.Add(branchName);
             return Run(SubCommandType.Commit, argumentMap);
         }
 
-        public static string RevParse(List<string> argumentList = null) {
+        public static IObservable<string> RevParse(List<string> argumentList = null) {
             argumentList = CreateListIfNull(argumentList);
             return Run(SubCommandType.RevParse, argumentList);
         }
 
-        public static string Rm(IEnumerable<string> files, bool ignoreUnmatch = true, List<string> argumentList = null) {
+        public static IObservable<string> Rm(IEnumerable<string> files, bool ignoreUnmatch = true, List<string> argumentList = null) {
             argumentList = CreateListIfNull(argumentList);
             argumentList.Add(string.Format("-- {0}", files.Combine()));
             if (ignoreUnmatch) {
@@ -83,7 +84,7 @@ namespace UnityModule {
             return Run(SubCommandType.Rm, argumentList);
         }
 
-        public static string GetCurrentCommitHash() {
+        public static IObservable<string> GetCurrentCommitHash() {
             return RevParse(
                 new List<string>() {
                     "HEAD",
@@ -91,21 +92,35 @@ namespace UnityModule {
             );
         }
 
-        private static string Run(SubCommandType subCommandType, List<string> argumentMap = null) {
-            System.Diagnostics.Process process = new System.Diagnostics.Process {
-                StartInfo = {
-                    FileName = EnvironmentSetting.Instance.Path.CommandGit,
-                    Arguments = string.Format("{0}{1}", SUB_COMMAND_MAP[subCommandType], CreateArgument(argumentMap)),
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
-                }
-            };
-            process.Start();
-            process.WaitForExit();
-            string result = process.StandardOutput.ReadToEnd();
-            process.Close();
-            return result;
+        private static IObservable<string> Run(SubCommandType subCommandType, List<string> argumentMap = null) {
+            return Observable
+                .Create<string>(
+                    (observer) => {
+                        System.Diagnostics.Process process = new System.Diagnostics.Process {
+                            StartInfo = {
+                                FileName = EnvironmentSetting.Instance.Path.CommandGit,
+                                Arguments = string.Format("{0}{1}", SUB_COMMAND_MAP[subCommandType], CreateArgument(argumentMap)),
+                                UseShellExecute = false,
+                                RedirectStandardOutput = true,
+                                RedirectStandardError = true,
+                                CreateNoWindow = true
+                            },
+                            EnableRaisingEvents = true,
+                        };
+                        process.Exited += (sender, args) => {
+                            System.Diagnostics.Process p = (System.Diagnostics.Process)sender;
+                            if (p.ExitCode == 0) {
+                                observer.OnNext(process.StandardOutput.ReadToEnd());
+                                observer.OnCompleted();
+                            } else {
+                                observer.OnError(new System.InvalidOperationException(process.StandardError.ReadToEnd()));
+                            }
+                            p.Close();
+                        };
+                        process.Start();
+                        return null;
+                    }
+                );
         }
 
         private static List<string> CreateListIfNull(List<string> argumentList) {
