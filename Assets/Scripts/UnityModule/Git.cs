@@ -13,6 +13,7 @@ namespace UnityModule {
             Commit,
             Push,
             RevParse,
+            Rm,
         }
 
         private static readonly Dictionary<SubCommandType, string> SUB_COMMAND_MAP = new Dictionary<SubCommandType, string>() {
@@ -22,6 +23,7 @@ namespace UnityModule {
             { SubCommandType.Commit  , "commit" },
             { SubCommandType.Push    , "push" },
             { SubCommandType.RevParse, "rev-parse" },
+            { SubCommandType.Rm      , "rm" },
         };
 
         public static string Add(IEnumerable<string> files = null, List<string> argumentList = null) {
@@ -70,6 +72,15 @@ namespace UnityModule {
         public static string RevParse(List<string> argumentList = null) {
             argumentList = CreateListIfNull(argumentList);
             return Run(SubCommandType.RevParse, argumentList);
+        }
+
+        public static string Rm(IEnumerable<string> files, bool ignoreUnmatch = true, List<string> argumentList = null) {
+            argumentList = CreateListIfNull(argumentList);
+            argumentList.Add(string.Format("-- {0}", files.Combine()));
+            if (ignoreUnmatch) {
+                argumentList.Add("--ignore-unmatch");
+            }
+            return Run(SubCommandType.Rm, argumentList);
         }
 
         public static string GetCurrentCommitHash() {
