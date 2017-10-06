@@ -49,10 +49,10 @@ namespace UnityModule.Command.VCS {
         public static IObservable<string> Checkout(string branchName, bool create = false, bool force = false, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             if (create) {
-                Branch(branchName, force);
+                argumentList.Add("-b");
             }
             argumentList.Add(branchName);
-            return Run(SubCommandType.Branch, argumentList);
+            return Run(SubCommandType.Checkout, argumentList);
         }
 
         public static IObservable<string> Commit(string message, List<string> argumentList = null) {
@@ -66,7 +66,7 @@ namespace UnityModule.Command.VCS {
             argumentList = new SafeList<string>(argumentList);
             argumentList.Add(remoteName);
             argumentList.Add(branchName);
-            return Run(SubCommandType.Commit, argumentList);
+            return Run(SubCommandType.Push, argumentList);
         }
 
         public static IObservable<string> RevParse(List<string> argumentList = null) {
