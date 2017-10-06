@@ -8,7 +8,15 @@ namespace UnityModule.Settings {
 
         public partial class EnvironmentSetting_Path {
 
+            /// <summary>
+            /// デフォルトの git コマンドパス
+            /// </summary>
             private const string DEFAULT_GIT_COMMAND_PATH = "/usr/local/bin/git";
+
+            /// <summary>
+            /// デフォルトの hub コマンドパス
+            /// </summary>
+            private const string DEFAULT_HUB_COMMAND_PATH = "/usr/local/bin/hub";
 
             /// <summary>
             /// git コマンドのパスの実体
@@ -23,10 +31,23 @@ namespace UnityModule.Settings {
                 get {
                     return this.commandGit;
                 }
-                set {
-                    this.commandGit = value;
+            }
+
+            /// <summary>
+            /// hub コマンドのパスの実体
+            /// </summary>
+            [SerializeField]
+            private string commanHub = DEFAULT_GIT_COMMAND_PATH;
+
+            /// <summary>
+            /// hub コマンドのパス
+            /// </summary>
+            public string CommandHub {
+                get {
+                    return this.commanHub;
                 }
             }
+
         }
 
     }
