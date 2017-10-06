@@ -83,6 +83,15 @@ namespace UnityModule.Command.VCS {
             return Run(SubCommandType.Rm, argumentList);
         }
 
+        public static IObservable<string> GetCurrentBranchName() {
+            return RevParse(
+                new List<string>() {
+                    "--abbrev-ref",
+                    "HEAD",
+                }
+            );
+        }
+
         public static IObservable<string> GetCurrentCommitHash() {
             return RevParse(
                 new List<string>() {
