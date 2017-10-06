@@ -14,10 +14,13 @@ namespace UnityModule.Command.VCS {
             { SubCommandType.PullRequest, "pull-request" },
         };
 
-        public static IObservable<string> PullRequest(string baseBranchName = "", List<string> argumentList = null) {
+        public static IObservable<string> PullRequest(string baseBranchName = "", string message = "", List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             if (!string.IsNullOrEmpty(baseBranchName)) {
                 argumentList.Add(string.Format("-b {0}", baseBranchName));
+            }
+            if (!string.IsNullOrEmpty(message)) {
+                argumentList.Add(string.Format("-m {0}", message.Quot()));
             }
             return Run(SubCommandType.PullRequest, argumentList);
         }
