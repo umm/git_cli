@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace UnityModule.Settings {
 
@@ -37,7 +35,7 @@ namespace UnityModule.Settings {
             /// hub コマンドのパスの実体
             /// </summary>
             [SerializeField]
-            private string commanHub = DEFAULT_GIT_COMMAND_PATH;
+            private string commanHub = DEFAULT_HUB_COMMAND_PATH;
 
             /// <summary>
             /// hub コマンドのパス
