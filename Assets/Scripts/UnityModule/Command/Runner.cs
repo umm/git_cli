@@ -72,7 +72,11 @@ namespace UnityModule.Command {
         }
 
         internal static string Quot(this string original) {
-            return string.Format("{1}{0}{1}", original, "\\\"");
+            return string.Format("{1}{0}{1}", original, "\"");
+        }
+
+        internal static string Escape(this string original) {
+            return original.Replace("\"", "\\\"");
         }
 
     }
