@@ -58,7 +58,7 @@ namespace UnityModule.Command.VCS {
         public static IObservable<string> Commit(string message, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             // コマンド経由の場合何らかのメッセージを入れないとコミットできない
-            argumentList.Add(string.Format("-m {0}", message.Quot()));
+            argumentList.Add(string.Format("-m {0}", message.Quot().Escape()));
             return Run(SubCommandType.Commit, argumentList);
         }
 
