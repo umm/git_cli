@@ -75,10 +75,6 @@ namespace UnityModule.Command {
             return string.Format("{1}{0}{1}", original, "\"");
         }
 
-        internal static string Escape(this string original) {
-            return original.Replace("\"", "\\\"");
-        }
-
     }
 
 }

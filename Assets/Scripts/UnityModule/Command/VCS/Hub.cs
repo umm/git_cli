@@ -20,7 +20,7 @@ namespace UnityModule.Command.VCS {
                 argumentList.Add(string.Format("-b {0}", baseBranchName));
             }
             if (!string.IsNullOrEmpty(message)) {
-                argumentList.Add(string.Format("-m {0}", message.Quot().Escape()));
+                argumentList.Add(string.Format("-m {0}", message.Quot()));
             }
             return Run(SubCommandType.PullRequest, argumentList);
         }
