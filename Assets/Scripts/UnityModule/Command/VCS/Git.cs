@@ -4,7 +4,11 @@ using UnityModule.Settings;
 
 namespace UnityModule.Command.VCS {
 
-    public static class Git {
+    public class GitAsync : Git<IObservable<string>> {}
+
+    public class Git : Git<string> {}
+
+    public abstract class Git<TResult> : Runner<TResult> where TResult : class {
 
         private enum SubCommandType {
             Add,
@@ -26,7 +30,7 @@ namespace UnityModule.Command.VCS {
             { SubCommandType.Rm      , "rm" },
         };
 
-        public static IObservable<string> Add(IEnumerable<string> files = null, List<string> argumentList = null) {
+        public TResult Add(IEnumerable<string> files = null, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             if (files == null) {
                 // ファイル未指定の場合全ファイルを追加する
@@ -37,7 +41,7 @@ namespace UnityModule.Command.VCS {
             return Run(SubCommandType.Add, argumentList);
         }
 
-        public static IObservable<string> Branch(string branchName, bool force = false, List<string> argumentList = null) {
+        public TResult Branch(string branchName, bool force = false, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             if (force) {
                 argumentList.Add("-f");
@@ -46,7 +50,7 @@ namespace UnityModule.Command.VCS {
             return Run(SubCommandType.Branch, argumentList);
         }
 
-        public static IObservable<string> Checkout(string branchName, bool create = false, bool force = false, List<string> argumentList = null) {
+        public TResult CheckoutAsync(string branchName, bool create = false, bool force = false, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             if (create) {
                 argumentList.Add("-b");
@@ -55,26 +59,26 @@ namespace UnityModule.Command.VCS {
             return Run(SubCommandType.Checkout, argumentList);
         }
 
-        public static IObservable<string> Commit(string message, List<string> argumentList = null) {
+        public TResult CommitAsync(string message, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             // コマンド経由の場合何らかのメッセージを入れないとコミットできない
             argumentList.Add(string.Format("-m {0}", message.Quot()));
             return Run(SubCommandType.Commit, argumentList);
         }
 
-        public static IObservable<string> Push(string branchName, string remoteName = "origin", List<string> argumentList = null) {
+        public TResult PushAsync(string branchName, string remoteName = "origin", List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             argumentList.Add(remoteName);
             argumentList.Add(branchName);
             return Run(SubCommandType.Push, argumentList);
         }
 
-        public static IObservable<string> RevParse(List<string> argumentList = null) {
+        public TResult RevParseAsync(List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             return Run(SubCommandType.RevParse, argumentList);
         }
 
-        public static IObservable<string> Rm(IEnumerable<string> files, bool ignoreUnmatch = true, List<string> argumentList = null) {
+        public TResult RmAsync(IEnumerable<string> files, bool ignoreUnmatch = true, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             if (ignoreUnmatch) {
                 argumentList.Add("--ignore-unmatch");
@@ -83,8 +87,8 @@ namespace UnityModule.Command.VCS {
             return Run(SubCommandType.Rm, argumentList);
         }
 
-        public static IObservable<string> GetCurrentBranchName() {
-            return RevParse(
+        public TResult GetCurrentBranchName() {
+            return RevParseAsync(
                 new List<string>() {
                     "--abbrev-ref",
                     "HEAD",
@@ -92,16 +96,16 @@ namespace UnityModule.Command.VCS {
             );
         }
 
-        public static IObservable<string> GetCurrentCommitHash() {
-            return RevParse(
+        public TResult GetCurrentCommitHash() {
+            return RevParseAsync(
                 new List<string>() {
                     "HEAD",
                 }
             );
         }
 
-        private static IObservable<string> Run(SubCommandType subCommandType, List<string> argumentMap = null) {
-            return Runner.RunCommand(EnvironmentSetting.Instance.Path.CommandGit, SUB_COMMAND_MAP[subCommandType], argumentMap);
+        private TResult Run(SubCommandType subCommandType, List<string> argumentMap = null) {
+            return this.Run(EnvironmentSetting.Instance.Path.CommandGit, SUB_COMMAND_MAP[subCommandType], argumentMap);
         }
 
     }
