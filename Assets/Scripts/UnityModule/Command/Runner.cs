@@ -7,7 +7,7 @@ namespace UnityModule.Command {
     public abstract class Runner<TResult> where TResult : class {
 
         internal static TResult Run(string command, string subCommand, List<string> argumentMap = null) {
-            if (typeof(TResult) == typeof(IObservable<>)) {
+            if (typeof(TResult).IsGenericType && typeof(IObservable<>).IsAssignableFrom(typeof(TResult).GetGenericTypeDefinition())) {
                 return RunCommandAsync(command, subCommand, argumentMap) as TResult;
             }
             return RunCommand(command, subCommand, argumentMap) as TResult;
