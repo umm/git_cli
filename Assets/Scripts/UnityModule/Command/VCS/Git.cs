@@ -50,7 +50,7 @@ namespace UnityModule.Command.VCS {
             return Run(SubCommandType.Branch, argumentList);
         }
 
-        public static TResult CheckoutAsync(string branchName, bool create = false, bool force = false, List<string> argumentList = null) {
+        public static TResult Checkout(string branchName, bool create = false, bool force = false, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             if (create) {
                 argumentList.Add("-b");
@@ -59,26 +59,26 @@ namespace UnityModule.Command.VCS {
             return Run(SubCommandType.Checkout, argumentList);
         }
 
-        public static TResult CommitAsync(string message, List<string> argumentList = null) {
+        public static TResult Commit(string message, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             // コマンド経由の場合何らかのメッセージを入れないとコミットできない
             argumentList.Add(string.Format("-m {0}", message.Quot()));
             return Run(SubCommandType.Commit, argumentList);
         }
 
-        public static TResult PushAsync(string branchName, string remoteName = "origin", List<string> argumentList = null) {
+        public static TResult Push(string branchName, string remoteName = "origin", List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             argumentList.Add(remoteName);
             argumentList.Add(branchName);
             return Run(SubCommandType.Push, argumentList);
         }
 
-        public static TResult RevParseAsync(List<string> argumentList = null) {
+        public static TResult RevParse(List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             return Run(SubCommandType.RevParse, argumentList);
         }
 
-        public static TResult RmAsync(IEnumerable<string> files, bool ignoreUnmatch = true, List<string> argumentList = null) {
+        public static TResult Rm(IEnumerable<string> files, bool ignoreUnmatch = true, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             if (ignoreUnmatch) {
                 argumentList.Add("--ignore-unmatch");
@@ -88,7 +88,7 @@ namespace UnityModule.Command.VCS {
         }
 
         public static TResult GetCurrentBranchName() {
-            return RevParseAsync(
+            return RevParse(
                 new List<string>() {
                     "--abbrev-ref",
                     "HEAD",
@@ -97,7 +97,7 @@ namespace UnityModule.Command.VCS {
         }
 
         public static TResult GetCurrentCommitHash() {
-            return RevParseAsync(
+            return RevParse(
                 new List<string>() {
                     "HEAD",
                 }
