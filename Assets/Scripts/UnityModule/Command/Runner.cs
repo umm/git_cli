@@ -6,7 +6,7 @@ namespace UnityModule.Command {
 
     public abstract class Runner<TResult> where TResult : class {
 
-        internal TResult Run(string command, string subCommand, List<string> argumentMap = null) {
+        internal static TResult Run(string command, string subCommand, List<string> argumentMap = null) {
             if (typeof(TResult) == typeof(IObservable<>)) {
                 return RunCommandAsync(command, subCommand, argumentMap) as TResult;
             }

@@ -18,7 +18,7 @@ namespace UnityModule.Command.VCS {
             { SubCommandType.PullRequest, "pull-request" },
         };
 
-        public TResult PullRequest(string baseBranchName = "", string message = "", List<string> argumentList = null) {
+        public static TResult PullRequest(string baseBranchName = "", string message = "", List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             if (!string.IsNullOrEmpty(baseBranchName)) {
                 argumentList.Add(string.Format("-b {0}", baseBranchName));
@@ -26,11 +26,11 @@ namespace UnityModule.Command.VCS {
             if (!string.IsNullOrEmpty(message)) {
                 argumentList.Add(string.Format("-m {0}", message.Quot()));
             }
-            return this.Run(SubCommandType.PullRequest, argumentList);
+            return Run(SubCommandType.PullRequest, argumentList);
         }
 
-        private TResult Run(SubCommandType subCommandType, List<string> argumentList = null) {
-            return this.Run(EnvironmentSetting.Instance.Path.CommandHub, SUB_COMMAND_MAP[subCommandType], argumentList);
+        private static TResult Run(SubCommandType subCommandType, List<string> argumentList = null) {
+            return Run(EnvironmentSetting.Instance.Path.CommandHub, SUB_COMMAND_MAP[subCommandType], argumentList);
         }
 
     }

@@ -30,7 +30,7 @@ namespace UnityModule.Command.VCS {
             { SubCommandType.Rm      , "rm" },
         };
 
-        public TResult Add(IEnumerable<string> files = null, List<string> argumentList = null) {
+        public static TResult Add(IEnumerable<string> files = null, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             if (files == null) {
                 // ファイル未指定の場合全ファイルを追加する
@@ -41,7 +41,7 @@ namespace UnityModule.Command.VCS {
             return Run(SubCommandType.Add, argumentList);
         }
 
-        public TResult Branch(string branchName, bool force = false, List<string> argumentList = null) {
+        public static TResult Branch(string branchName, bool force = false, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             if (force) {
                 argumentList.Add("-f");
@@ -50,7 +50,7 @@ namespace UnityModule.Command.VCS {
             return Run(SubCommandType.Branch, argumentList);
         }
 
-        public TResult CheckoutAsync(string branchName, bool create = false, bool force = false, List<string> argumentList = null) {
+        public static TResult CheckoutAsync(string branchName, bool create = false, bool force = false, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             if (create) {
                 argumentList.Add("-b");
@@ -59,26 +59,26 @@ namespace UnityModule.Command.VCS {
             return Run(SubCommandType.Checkout, argumentList);
         }
 
-        public TResult CommitAsync(string message, List<string> argumentList = null) {
+        public static TResult CommitAsync(string message, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             // コマンド経由の場合何らかのメッセージを入れないとコミットできない
             argumentList.Add(string.Format("-m {0}", message.Quot()));
             return Run(SubCommandType.Commit, argumentList);
         }
 
-        public TResult PushAsync(string branchName, string remoteName = "origin", List<string> argumentList = null) {
+        public static TResult PushAsync(string branchName, string remoteName = "origin", List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             argumentList.Add(remoteName);
             argumentList.Add(branchName);
             return Run(SubCommandType.Push, argumentList);
         }
 
-        public TResult RevParseAsync(List<string> argumentList = null) {
+        public static TResult RevParseAsync(List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             return Run(SubCommandType.RevParse, argumentList);
         }
 
-        public TResult RmAsync(IEnumerable<string> files, bool ignoreUnmatch = true, List<string> argumentList = null) {
+        public static TResult RmAsync(IEnumerable<string> files, bool ignoreUnmatch = true, List<string> argumentList = null) {
             argumentList = new SafeList<string>(argumentList);
             if (ignoreUnmatch) {
                 argumentList.Add("--ignore-unmatch");
@@ -87,7 +87,7 @@ namespace UnityModule.Command.VCS {
             return Run(SubCommandType.Rm, argumentList);
         }
 
-        public TResult GetCurrentBranchName() {
+        public static TResult GetCurrentBranchName() {
             return RevParseAsync(
                 new List<string>() {
                     "--abbrev-ref",
@@ -96,7 +96,7 @@ namespace UnityModule.Command.VCS {
             );
         }
 
-        public TResult GetCurrentCommitHash() {
+        public static TResult GetCurrentCommitHash() {
             return RevParseAsync(
                 new List<string>() {
                     "HEAD",
@@ -104,8 +104,8 @@ namespace UnityModule.Command.VCS {
             );
         }
 
-        private TResult Run(SubCommandType subCommandType, List<string> argumentMap = null) {
-            return this.Run(EnvironmentSetting.Instance.Path.CommandGit, SUB_COMMAND_MAP[subCommandType], argumentMap);
+        private static TResult Run(SubCommandType subCommandType, List<string> argumentMap = null) {
+            return Run(EnvironmentSetting.Instance.Path.CommandGit, SUB_COMMAND_MAP[subCommandType], argumentMap);
         }
 
     }
