@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@umm/command_runner@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@umm/command_runner/-/command_runner-1.0.0.tgz#73f5ffda21c084d51dcc8789f90e372697ba046b"
+"@umm/command_runner@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@umm/command_runner/-/command_runner-1.0.1.tgz#56af58c8cf17f3a25cdd158ffc68a07c4e314d0c"
   dependencies:
     "@umm/unirx" "^1.0.3"
     glob "^7.1.2"
