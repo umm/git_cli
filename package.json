@@ -24,6 +24,7 @@
     "scripts"
   ],
   "dependencies": {
+    "@umm/command_runner": "^1.0.1",
     "@umm/environment_setting": "^1.1.4",
     "@umm/unirx": "^1.0.3",
     "glob": "^7.1.2",

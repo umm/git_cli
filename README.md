@@ -1,22 +1,22 @@
-# What
+# git
 
 * git コマンドの Unity 実装
 
-# Requirement
+## Requirement
 
 * Unity 2017.1
 * git
 * hub (Optional)
 
-# Install
+## Install
 
 ```shell
 $ npm install github:umm-projects/git
 ```
 
-# Usage
+## Usage
 
-## 実装済のクラス
+### 実装済のクラス
 
 * [`Git`](Assets/Scripts/UnityModule/Command/VCS/Git.cs)
     * `git` コマンドを同期的に実行
@@ -27,7 +27,7 @@ $ npm install github:umm-projects/git
 * [`HubAsync`](Assets/Scripts/UnityModule/Command/VCS/Hub.cs)
     * `hub` コマンドを非同期的に実行
 
-## 実装済のサブコマンド
+### 実装済のサブコマンド
 
 * `add`
 * `branch`
@@ -39,7 +39,7 @@ $ npm install github:umm-projects/git
 * `pull-request`
     * `hub` コマンドを利用
 
-## 同期的にコマンドを実行する
+### 同期的にコマンドを実行する
 
 ```csharp
 Git.Add(new [] { "hoge.txt", "fuga.cs", });
@@ -47,7 +47,7 @@ Git.Commit("message for commit");
 Git.Push("any_branch_name");
 ```
 
-## 非同期的にコマンドを実行する
+### 非同期的にコマンドを実行する
 
 ```csharp
 // 書き方を統一するために、空の Unit を吐き出すところから開始している
@@ -58,7 +58,7 @@ Observable.Return(Unit.Default)
     .Subscribe();
 ```
 
-# License
+## License
 
 Copyright (c) 2017-2018 Tetsuya Mori
 
