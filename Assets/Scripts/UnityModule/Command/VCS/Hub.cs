@@ -8,7 +8,7 @@ namespace UnityModule.Command.VCS {
 
     public class Hub : Hub<string> {}
 
-    public abstract class Hub<TResult> : Runner<TResult> where TResult : class {
+    public abstract class Hub<TResult> where TResult : class {
 
         private enum SubCommandType {
             PullRequest,
@@ -30,7 +30,7 @@ namespace UnityModule.Command.VCS {
         }
 
         private static TResult Run(SubCommandType subCommandType, List<string> argumentList = null) {
-            return Run(EnvironmentSetting.Instance.Path.CommandHub, SUB_COMMAND_MAP[subCommandType], argumentList);
+            return Runner<TResult>.Run(EnvironmentSetting.Instance.Path.CommandHub, SUB_COMMAND_MAP[subCommandType], argumentList);
         }
 
     }

@@ -8,7 +8,7 @@ namespace UnityModule.Command.VCS {
 
     public class Git : Git<string> {}
 
-    public abstract class Git<TResult> : Runner<TResult> where TResult : class {
+    public abstract class Git<TResult> where TResult : class {
 
         private enum SubCommandType {
             Add,
@@ -105,7 +105,7 @@ namespace UnityModule.Command.VCS {
         }
 
         private static TResult Run(SubCommandType subCommandType, List<string> argumentMap = null) {
-            return Run(EnvironmentSetting.Instance.Path.CommandGit, SUB_COMMAND_MAP[subCommandType], argumentMap);
+            return Runner<TResult>.Run(EnvironmentSetting.Instance.Path.CommandGit, SUB_COMMAND_MAP[subCommandType], argumentMap);
         }
 
     }
