@@ -1,38 +1,52 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using UniRx;
 using UnityModule.Settings;
 
-namespace UnityModule.Command.VCS {
+namespace UnityModule.Command.VCS
+{
+    [PublicAPI]
+    public class HubAsync : Hub<IObservable<string>>
+    {
+    }
 
-    public class HubAsync : Hub<IObservable<string>> {}
+    [PublicAPI]
+    public class Hub : Hub<string>
+    {
+    }
 
-    public class Hub : Hub<string> {}
-
-    public abstract class Hub<TResult> where TResult : class {
-
-        private enum SubCommandType {
+    [PublicAPI]
+    public abstract class Hub<TResult> where TResult : class
+    {
+        private enum SubCommandType
+        {
             PullRequest,
         }
 
-        private static readonly Dictionary<SubCommandType, string> SUB_COMMAND_MAP = new Dictionary<SubCommandType, string>() {
-            { SubCommandType.PullRequest, "pull-request" },
+        private static readonly Dictionary<SubCommandType, string> SubCommandMap = new Dictionary<SubCommandType, string>()
+        {
+            {SubCommandType.PullRequest, "pull-request"},
         };
 
-        public static TResult PullRequest(string baseBranchName = "", string message = "", List<string> argumentList = null) {
+        public static TResult PullRequest(string baseBranchName = "", string message = "", List<string> argumentList = null)
+        {
             argumentList = new SafeList<string>(argumentList);
-            if (!string.IsNullOrEmpty(baseBranchName)) {
-                argumentList.Add(string.Format("-b {0}", baseBranchName));
+            if (!string.IsNullOrEmpty(baseBranchName))
+            {
+                argumentList.Add($"-b {baseBranchName}");
             }
-            if (!string.IsNullOrEmpty(message)) {
-                argumentList.Add(string.Format("-m {0}", message.Quot()));
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                argumentList.Add($"-m {message.Quot()}");
             }
+
             return Run(SubCommandType.PullRequest, argumentList);
         }
 
-        private static TResult Run(SubCommandType subCommandType, List<string> argumentList = null) {
-            return Runner<TResult>.Run(EnvironmentSetting.Instance.Path.CommandHub, SUB_COMMAND_MAP[subCommandType], argumentList);
+        private static TResult Run(SubCommandType subCommandType, List<string> argumentList = null)
+        {
+            return Runner<TResult>.Run(GitSetting.GetOrDefault().CommandHub, SubCommandMap[subCommandType], argumentList);
         }
-
     }
-
 }
