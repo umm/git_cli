@@ -1,0 +1,12 @@
+{
+    "name": "umm@git",
+    "references": [
+        "umm@command_runner",
+        "umm@setting_core",
+        "umm@unirx"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
