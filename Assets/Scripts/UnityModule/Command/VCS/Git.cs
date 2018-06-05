@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using UniRx;
 using UnityModule.Settings;
 
 namespace UnityModule.Command.VCS
