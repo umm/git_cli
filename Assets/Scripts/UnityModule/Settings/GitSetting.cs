@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UnityModule.Settings
 {
-    public class GitSetting : Setting<GitSetting>
+    public class GitSetting : Setting<GitSetting>, IEnvironmentSetting
     {
         /// <summary>
         /// デフォルトの git コマンドパス
@@ -57,7 +57,7 @@ namespace UnityModule.Settings
         [UnityEditor.MenuItem("Assets/Create/Settings/Git Setting")]
         public static void CreateSettingAsset()
         {
-            CreateAsset(true);
+            CreateAsset();
         }
 #endif
     }
