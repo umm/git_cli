@@ -2,9 +2,9 @@
   "name": "@umm/git",
   "version": "3.1.2",
   "description": "git command wrapper for Unity",
-  "homepage": "https://github.com/umm-projects/git",
+  "homepage": "https://github.com/umm/git",
   "bugs": {
-    "url": "https://github.com/umm-projects/git/issues"
+    "url": "https://github.com/umm/git/issues"
   },
   "scripts": {
     "umm:init": "umm-init",
@@ -18,17 +18,17 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:umm-projects/git"
+    "url": "git@github.com:umm/git"
   },
   "files": [
     "Assets",
     "scripts"
   ],
   "dependencies": {
-    "@umm/command_runner": "umm-projects/command_runner#^1.0.0",
-    "@umm/scripts": "umm-projects/scripts#^1.0.0",
-    "@umm/setting_core": "umm-projects/setting_core#^2.0.0",
-    "@umm/unirx": "umm-projects/unirx#^2.0.0"
+    "@umm/command_runner": "umm/command_runner#^1.0.0",
+    "@umm/scripts": "umm/scripts#^1.0.0",
+    "@umm/setting_core": "umm/setting_core#^2.0.0",
+    "@umm/unirx": "umm/unirx#^2.0.0"
   },
   "devDependencies": {}
 }

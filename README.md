@@ -11,7 +11,7 @@
 ## Install
 
 ```shell
-$ npm install github:umm-projects/git
+$ npm install github:umm/git
 ```
 
 ## Usage
