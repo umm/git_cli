@@ -1,5 +1,5 @@
 {
-    "name": "umm@git",
+    "name": "umm@git_cli",
     "references": [
         "umm@command_runner",
         "umm@setting_core",
