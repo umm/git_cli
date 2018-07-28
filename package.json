@@ -1,6 +1,6 @@
 {
   "name": "@umm/git_cli",
-  "version": "3.1.3",
+  "version": "4.0.0",
   "description": "git command wrapper for Unity",
   "homepage": "https://git_clihub.com/umm/git_cli",
   "bugs": {
