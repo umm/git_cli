@@ -6,7 +6,7 @@ using UnityModule.Settings;
 namespace UnityModule.Command.VCS
 {
     [PublicAPI]
-    public class GitAsync : Git<IObservable<string>>
+    public class ObservableGit : Git<IObservable<string>>
     {
     }
 

@@ -7,7 +7,7 @@ using UnityModule.Settings;
 namespace UnityModule.Command.VCS
 {
     [PublicAPI]
-    public class HubAsync : Hub<IObservable<string>>
+    public class ObservableHub : Hub<IObservable<string>>
     {
     }
 
