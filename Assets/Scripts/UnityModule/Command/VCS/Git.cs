@@ -27,6 +27,7 @@ namespace UnityModule.Command.VCS
             Push,
             RevParse,
             Rm,
+            Status,
         }
 
         private static readonly Dictionary<SubCommandType, string> SubCommandMap = new Dictionary<SubCommandType, string>()
@@ -38,6 +39,7 @@ namespace UnityModule.Command.VCS
             {SubCommandType.Push, "push"},
             {SubCommandType.RevParse, "rev-parse"},
             {SubCommandType.Rm, "rm"},
+            {SubCommandType.Status, "status"},
         };
 
         public static TResult Add(IEnumerable<string> files = null, List<string> argumentList = null)
@@ -110,6 +112,16 @@ namespace UnityModule.Command.VCS
 
             argumentList.Add($"-- {files.Combine()}");
             return Run(SubCommandType.Rm, argumentList);
+        }
+
+        public static TResult Status(bool useShortFormat = true, List<string> argumentList = null)
+        {
+            argumentList = new SafeList<string>(argumentList);
+            if (useShortFormat)
+            {
+                argumentList.Add("--short");
+            }
+            return Run(SubCommandType.Status, argumentList);
         }
 
         public static TResult GetCurrentBranchName()
