@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using UniRx;
 using UnityModule.Settings;
 
 namespace UnityModule.Command.VCS
@@ -29,7 +28,7 @@ namespace UnityModule.Command.VCS
             {SubCommandType.PullRequest, "pull-request"},
         };
 
-        public static TResult PullRequest(string baseBranchName = "", string message = "", List<string> argumentList = null)
+        public static TResult PullRequest(string message, string baseBranchName = "", List<string> argumentList = null)
         {
             argumentList = new SafeList<string>(argumentList);
             if (!string.IsNullOrEmpty(baseBranchName))
@@ -37,10 +36,7 @@ namespace UnityModule.Command.VCS
                 argumentList.Add($"-b {baseBranchName}");
             }
 
-            if (!string.IsNullOrEmpty(message))
-            {
-                argumentList.Add($"-m {message.Quot()}");
-            }
+            argumentList.Add($"-m {message.Quot()}");
 
             return Run(SubCommandType.PullRequest, argumentList);
         }
